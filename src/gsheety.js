@@ -34,4 +34,20 @@ class Gsheety {
       rows: res.data.table.rows.map((row) => row.c.map((cell) => (cell ? cell.v : null))),
     };
   }
+
+  static async getExportedData(url, type = "csv") {
+    const formats = {
+      csv: "export?format=csv",
+      tsv: "export?format=tsv",
+      pdf: "export?format=pdf",
+      xlsx: "export?format=xlsx",
+    };
+
+    if (!formats[type]) throw new Error("Unsupported format. Use: csv, tsv, pdf, or xlsx.");
+
+    const res = await fetch(`${this.parseURL(url)}/${formats[type]}`);
+    if (!res.ok) throw new Error(`HTTP Error ${res.status}: ${res.statusText}`);
+
+    return type === "pdf" || type === "xlsx" ? await res.blob() : await res.text();
+  }
 }
