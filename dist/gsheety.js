@@ -32,6 +32,7 @@ class Gsheety {
     return {
       cols: res.data.table.cols.map((col) => (col ? { label: col.label, type: col.type } : null)).filter((col) => col !== null),
       rows: res.data.table.rows.map((row) => row.c.map((cell) => (cell ? cell.v : null))).map((cells) => cells.filter((cell) => cell !== null)),
+      msg: res.msg,
     };
   }
 

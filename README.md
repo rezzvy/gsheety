@@ -21,7 +21,19 @@ This library uses the gviz/tq API to fetch and parse data from Google Sheets.
 <script src="https://cdn.jsdelivr.net/gh/rezzvy/gsheety@latest/dist/gsheety.min.js"></script>
 ```
 
-2. Assuming you're in a browser environment, you can use the library by calling the method directly `Gsheety.{methodName}`. In a Node environment, you need to require it first.
+_or if you're in node environment_
+
+```
+npm install gsheety
+```
+
+2. Assuming you're in a browser environment, you can use the library by calling the method directly `Gsheety.{methodName}`
+
+_or if you're in node environment, you need to require it first._
+
+```javascript
+const Gsheety = require("gsheety");
+```
 
 ## Usage
 

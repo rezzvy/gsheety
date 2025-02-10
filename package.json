@@ -1,0 +1,26 @@
+{
+  "name": "gsheety",
+  "version": "1.0.0",
+  "description": "JavaScript library to fetch data from Google Sheet",
+  "main": "dist/gsheety.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rezzvy/gsheety.git"
+  },
+  "keywords": [
+    "google-spreadsheets",
+    "google-sheets",
+    "google-sheet",
+    "gviz",
+    "tq-query"
+  ],
+  "author": "Rezzvy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rezzvy/gsheety/issues"
+  },
+  "homepage": "https://github.com/rezzvy/gsheety#readme"
+}
