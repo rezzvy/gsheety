@@ -51,11 +51,24 @@ class Gsheety {
     if (!res.data) return { cols: [], rows: [], msg: res.msg };
     if (options.raw) return res;
 
-    return {
-      cols: res.data.table.cols.map((col) => (col ? { label: col.label, type: col.type } : null)).filter((col) => col !== null),
-      rows: res.data.table.rows.map((row) => row.c.map((cell) => (cell ? cell.v : null))).map((cells) => cells.filter((cell) => cell !== null)),
-      msg: res.msg,
-    };
+    let cols = res.data.table.cols.map((col, index) => ({
+      label: col?.label || `Column ${index + 1}`,
+      columnId: col?.id,
+      type: col?.type,
+    }));
+
+    let rows = res.data.table.rows.map((row) =>
+      cols.map((_, i) => {
+        const cell = row.c[i];
+        return cell ? cell.v : null;
+      })
+    );
+
+    if (options.clearNull) {
+      rows = rows.map((row) => row.filter((cell) => cell !== null));
+    }
+
+    return { cols, rows, msg: res.msg };
   }
 
   /**

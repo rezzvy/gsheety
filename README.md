@@ -102,7 +102,9 @@ This method is used to get the data from the google sheet.
     // Sheet name. If invalid, the active sheet will be used.
     sheet: "Sheet1",
     // If true, returns raw JSON. If false, returns normalized data.
-    raw: false
+    raw: false,
+    // If true, all null values will be removed from each row.
+    clearNull: false
 }
 ```
 
