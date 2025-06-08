@@ -118,6 +118,37 @@ This method is used to get data from various formats, and it does not support qu
 - **Second parameter**
   Expected `csv, tsv, pdf, or xlsx`. Please note that when you use `pdf` or `xlsx`, it will return a blob, otherwise, it will return text.
 
+### `generateTableFromOutput(data, options)` method
+
+Generates an HTML `<table>` element from the parsed Google Sheets data output.
+
+- **Parameters:**
+
+  - `data` (Object): The parsed data object returned by the `get()` method.
+
+    - `data.cols` (Array): Array of column metadata objects.
+    - `data.rows` (Array): Array of rows, each being an array of cell values.
+    - `data.msg` (string): Status message, expected to be `"ok"` for valid data.
+
+  - `options` (Object, optional): Optional settings.
+
+    - `className` (Object, optional): CSS class names for table elements.
+
+      - `table` (string): Class name for the `<table>` element.
+      - `thead` (string): Class name for the `<thead>` element.
+      - `tbody` (string): Class name for the `<tbody>` element.
+
+    - `callback` (Object, optional): Callback functions for customizing elements.
+
+      - `theadItem` (function): Function called with each `<th>` element.
+      - `tbodyItem` (function): Function called with each `<td>` element.
+
+- **Returns:**
+  `HTMLTableElement` — The constructed HTML table element.
+
+- **Throws:**
+  Throws an error if the `data` parameter is invalid or does not contain valid data.
+
 ## Contributing
 
 There's always room for improvement. Feel free to contribute!

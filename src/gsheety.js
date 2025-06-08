@@ -93,6 +93,68 @@ class Gsheety {
 
     return type === "pdf" || type === "xlsx" ? await res.blob() : await res.text();
   }
+
+  /**
+   * Generates an HTML table element from the given Google Sheets data output.
+   * @param {Object} data - The parsed data object returned by the get() method.
+   * @param {Array} data.cols - Array of column metadata objects.
+   * @param {Array} data.rows - Array of rows, each being an array of cell values.
+   * @param {string} data.msg - Status message, should be "ok" for valid data.
+   * @param {Object} [options={}] - Optional settings.
+   * @param {Object} [options.className] - CSS class names for table elements.
+   * @param {string} [options.className.table] - Class name for the table element.
+   * @param {string} [options.className.thead] - Class name for the thead element.
+   * @param {string} [options.className.tbody] - Class name for the tbody element.
+   * @param {Object} [options.callback] - Callback functions for customizing elements.
+   * @param {function(HTMLElement):void} [options.callback.theadItem] - Called for each thead <th> element.
+   * @param {function(HTMLElement):void} [options.callback.tbodyItem] - Called for each tbody <td> element.
+   * @returns {HTMLTableElement} The constructed HTML table element.
+   * @throws {Error} Throws if the data parameter is invalid or not available.
+   */
+  static generateTableFromOutput(data, options = {}) {
+    if (!data || !Array.isArray(data.rows) || !Array.isArray(data.cols) || data.msg !== "ok") {
+      throw new Error("Given data parameter is not valid or available.");
+    }
+
+    const table = document.createElement("table");
+    const thead = document.createElement("thead");
+    const tbody = document.createElement("tbody");
+
+    if (options.className?.table) table.className = options.className.table;
+    if (options.className?.thead) thead.className = options.className.thead;
+    if (options.className?.tbody) tbody.className = options.className.tbody;
+
+    const headerRow = document.createElement("tr");
+    data.cols.forEach((col) => {
+      const th = document.createElement("th");
+      th.textContent = col.label;
+      headerRow.appendChild(th);
+
+      if (typeof options.callback?.theadItem === "function") {
+        options.callback.theadItem(th);
+      }
+    });
+    thead.appendChild(headerRow);
+
+    data.rows.forEach((row) => {
+      const tr = document.createElement("tr");
+      row.forEach((cell) => {
+        const td = document.createElement("td");
+        td.textContent = cell;
+        tr.appendChild(td);
+
+        if (typeof options.callback?.tbodyItem === "function") {
+          options.callback.tbodyItem(td);
+        }
+      });
+      tbody.appendChild(tr);
+    });
+
+    table.appendChild(thead);
+    table.appendChild(tbody);
+
+    return table;
+  }
 }
 
 if (typeof module !== "undefined" && module.exports) {

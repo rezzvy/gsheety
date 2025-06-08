@@ -64,6 +64,51 @@ class Gsheety {
 
     return type === "pdf" || type === "xlsx" ? await res.blob() : await res.text();
   }
+
+  static generateTableFromOutput(data, options = {}) {
+    if (!data || !Array.isArray(data.rows) || !Array.isArray(data.cols) || data.msg !== "ok") {
+      throw new Error("Given data parameter is not valid or available.");
+    }
+
+    const table = document.createElement("table");
+    const thead = document.createElement("thead");
+    const tbody = document.createElement("tbody");
+
+    if (options.className?.table) table.className = options.className.table;
+    if (options.className?.thead) thead.className = options.className.thead;
+    if (options.className?.tbody) tbody.className = options.className.tbody;
+
+    const headerRow = document.createElement("tr");
+    data.cols.forEach((col) => {
+      const th = document.createElement("th");
+      th.textContent = col.label;
+      headerRow.appendChild(th);
+
+      if (typeof options.callback?.theadItem === "function") {
+        options.callback.theadItem(th);
+      }
+    });
+    thead.appendChild(headerRow);
+
+    data.rows.forEach((row) => {
+      const tr = document.createElement("tr");
+      row.forEach((cell) => {
+        const td = document.createElement("td");
+        td.textContent = cell;
+        tr.appendChild(td);
+
+        if (typeof options.callback?.tbodyItem === "function") {
+          options.callback.tbodyItem(td);
+        }
+      });
+      tbody.appendChild(tr);
+    });
+
+    table.appendChild(thead);
+    table.appendChild(tbody);
+
+    return table;
+  }
 }
 
 if (typeof module !== "undefined" && module.exports) {
